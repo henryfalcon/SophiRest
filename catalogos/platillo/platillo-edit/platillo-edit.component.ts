@@ -195,23 +195,32 @@ export class PlatilloEditComponent implements OnInit, AfterViewInit, OnDestroy {
     const editing =  this.dbOperations.editPhotoPlatillo(this.plat, this.imagen_selected, IsNewPhoto);
     this.loadSvc.add(editing, {key:"edit-loading"})
     editing.subscribe( 
-      url=> { if (url) { 
-                let downloadurl: string= "";
-                if (IsNewPhoto) { 
-                  downloadurl = url; }
-                else { 
-                  downloadurl = url[1];}
-                this.snackInfo.succes("¡Foto Editada!");
-                this.editPlatForm.patchValue({fotografia: downloadurl});
-                this.plat.imagen = downloadurl;
-                this.subIsUploadingPhoto=false;
-                }
-              else { 
-                this.showErrorMessage("Error al subir la foto. No se pudo obtener la url");  
-                this.subIsUploadingPhoto=false;}},
-      error => { this.showErrorMessage(error);  
-                 this.subIsUploadingPhoto=false;
-                 this.plat.imagen = "";});
+      url=> { 
+        if (url) { 
+          let downloadurl: string= "";
+          if (IsNewPhoto) { 
+            downloadurl = url; }
+          else { 
+            downloadurl = url[1];
+          }
+          this.dbOperations.savePhotoUrl(this.plat.id, downloadurl)
+          .then(()=>{          
+              this.snackInfo.succes("¡Foto Editada!");
+              this.editPlatForm.patchValue({fotografia: downloadurl});
+              this.plat.imagen = downloadurl;
+              this.subIsUploadingPhoto=false;})
+          .catch(error => this.showErrorMessage(error));
+        }
+        else { 
+          this.showErrorMessage("Error al subir la foto. No se pudo obtener la url");  
+          this.subIsUploadingPhoto=false;
+        }
+      }, 
+      error => { 
+          this.showErrorMessage(error);  
+          this.subIsUploadingPhoto=false;                 
+          this.plat.imagen = "";
+      });
   }
 
   selectFile(event:any):void {
