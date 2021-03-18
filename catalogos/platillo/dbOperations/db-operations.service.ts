@@ -105,13 +105,17 @@ export class DbOperationsService {
               throw new Error(err);});
   }
 
+  public savePhotoUrl(id_platillo: string, fotourl:string){
+    return this.afs.collection('Platillos').doc(id_platillo).update({imagen: fotourl});
+  }
+
   public editPhotoPlatillo(platillo: PlatilloI, PhotoFile: FileI, newPhoto: boolean){
     if (newPhoto){ //Reemplazo de foto
       return this.uploadFoto(platillo.id, PhotoFile);}
     else {        
       const deletephoto = this.deleteFotoStorage(platillo.imagen);
       const uploadphoto = this.uploadFoto(platillo.id, PhotoFile);
-      return forkJoin([deletephoto, uploadphoto]).pipe(take(1));}
+      return forkJoin([deletephoto, uploadphoto]).pipe(catchError(this.errorHandler), take(1));}
   }
 
   private photoNameAddedWithPlatilloKey(filename: string, id: string): string {
