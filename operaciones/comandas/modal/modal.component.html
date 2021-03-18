@@ -1,0 +1,11 @@
+<h2>{{data.message}}</h2>
+<mat-dialog-content class="dialog-content">
+    <span [ngSwitch]="data.toForm">
+        <div *ngSwitchCase="'cant-observ'">
+            <app-cant-observ></app-cant-observ>
+        </div>
+        <div *ngSwitchDefault>
+            <!-- nothing -->    
+        </div>
+    </span>
+</mat-dialog-content>

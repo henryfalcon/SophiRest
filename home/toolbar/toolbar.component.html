@@ -1,0 +1,27 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <button mat-icon-button (click)="showHideSideNavMenu()"
+            [disabled] = !isLogged>
+            <mat-icon>menu</mat-icon>
+        </button>
+        <span fxFlex>Sophi-Rest. {{Company_Name}}</span>
+        <button mat-icon-button class="nav-item nav-link-edit"
+            [routerLink]="['/']"
+            [ngStyle]="{'margin-right.px':45}"
+            [disabled] = isLogged>
+            <mat-icon>login</mat-icon> Login 
+        </button>
+        <button mat-icon-button
+            [ngStyle]="{'margin-right.px':45}"
+            [disabled] = !isLogged
+            (click)="confirm_logoutApplication()">
+            <mat-icon>logout</mat-icon> Logout 
+        </button>
+        <button mat-icon-button class="nav-item nav-link-edit"
+            [routerLink]="['register']"
+            [ngStyle]="{'margin-right.px':45}"
+            [disabled] = isLogged>
+            <mat-icon>face</mat-icon> Register 
+        </button>
+    </mat-toolbar-row>
+</mat-toolbar>

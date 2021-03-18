@@ -1,0 +1,11 @@
+<h2>{{data.message}}</h2>
+<mat-dialog-content class="dialog-content">
+    <span [ngSwitch]="data.toForm">
+        <div *ngSwitchCase="'edit_User'">
+            <app-user-edit [user] = "data.content"></app-user-edit>
+        </div>
+        <div *ngSwitchDefault>
+            <!-- nothing -->
+        </div>
+    </span>
+</mat-dialog-content>

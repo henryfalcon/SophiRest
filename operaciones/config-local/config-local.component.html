@@ -1,0 +1,126 @@
+<mat-toolbar>Configura el Local</mat-toolbar>
+<app-spinner *ngIf="isDataLoading('config_loading')"></app-spinner>
+<mat-vertical-stepper [linear] = "false" #stepper> 
+    <mat-step [stepControl] = "rest1FormGroup" errorMessage="Introduzca el número de meseros válidos">
+        <form [formGroup]="rest1FormGroup">
+            <ng-template matStepLabel> 1.- Configura el Local </ng-template>
+            <!-- Mat Select Configuracion -->
+            <mat-form-field>
+                <mat-select #matSelectConfig placeholder="Seleccione configuracion" [disabled]="isDataLoading('config_loading')">                                      
+                    <mat-option *ngIf="!configlocal" value="" disabled>No hay configuraciones</mat-option>
+                    <mat-option value="Nuevo">Nueva Configuracion</mat-option>
+                    <mat-option value="Pedidos">Solo Pedidos</mat-option>
+                    <mat-option *ngFor="let conf of configlocal" [value]="conf">
+                        {{conf.config_name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- Numero de mesas -->
+            <mat-form-field [ngStyle]="{'margin-left.px': 20}">
+                <input formControlName="mesas" #mesas matInput placeholder="*Numero de Mesas" required>
+                <mat-error>Campo obligatorio.</mat-error>
+            </mat-form-field>
+            <!-- Meseros -->
+            <mat-form-field [ngStyle]="{'margin-left.px': 20}">
+                <input formControlName="meseros" #meseros matInput placeholder="Numero de Meseros" >
+                <mat-error>Campo obligatorio.</mat-error>
+            </mat-form-field><br>
+            <!-- Asignar Mesa Slide -->
+            <mat-slide-toggle #slide formControlName="asign_mesa_mesero">
+                ¿Asignar Mesas?
+            </mat-slide-toggle>            
+            <!-- Next Button -->           
+            <button mat-raised-button (click)="NextStep('step2')"                
+                #next1_button matStepperNext 
+                [ngStyle]="{'margin-left.px': 50}"
+                color="primary"  type="button">                
+                Siguiente
+            </button>
+        </form> 
+    </mat-step> 
+    <mat-step [stepControl] label="2.- Asignacion de Meseros" [optional]="true">
+        <!-- <ng-template matSetpLabel> 2.- Asignación de Mesas </ng-template>            -->
+        <mat-table [ngStyle]="{'max-width.px': 500}" [dataSource]="dataSourceMesas" matSort>
+            <ng-container matColumnDef="Mesa">
+                <mat-header-cell *matHeaderCellDef  mat-sort-header> Mesa </mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.id_mesa}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Alias_Mesa">
+                <mat-header-cell *matHeaderCellDef  mat-sort-header> Alias Mesa</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.mesa_name}}</mat-cell>
+            </ng-container>                
+            <ng-container matColumnDef="Mesero">
+                <mat-header-cell *matHeaderCellDef  mat-sort-header> Mesero </mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.mesero}}</mat-cell>
+            </ng-container>     
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let element"> 
+                    <button mat-icon-button color="primary" (click)="AsignarMesero(element)"
+                        [disabled]="isDataLoading('config_loading')">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="confirm_Delete_Mesa(element)"
+                        [disabled]="isDataLoading('config_loading')">
+                        <mat-icon>delete_outline</mat-icon>
+                    </button>
+                </td>                        
+            </ng-container>    
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>  
+        </mat-table><br>
+        <!-- Next Button -->        
+        <button mat-raised-button  (click)="NextStep('step3')"        
+            #next2_button
+            color = "primary" type="button"
+            matStepperNext>
+            Siguiente
+        </button>
+        <button mat-raised-button (click)="SaveMesasMeserosConfig()"
+            *ngIf="mesas_meseros_has_edicion"
+            type ="button"
+            [ngStyle]="{'margin.left.px': 10}"
+            color = "accent" type="button">
+            Guardar Cambios            
+        </button>
+    </mat-step>
+    <mat-step [stepControl] label="3.- Inicia Operacion">
+        <form [formGroup]="rest2FormGroup">
+            <mat-form-field>
+                <input matInput placeholder = '*Nombre de la Configuracion' required
+                    #nombre_configuracion                    
+                    type = "text"
+                    formControlName = "config_name">   
+                <mat-error> Campo Obligatorio </mat-error>                 
+            </mat-form-field><br>
+            <mat-form-field>
+                <input #horaInicio matInput
+                    formControlName = "hora_inicio"
+                    placeholder="Hora de Inicio" 
+                    [ngxTimepicker]="picker">
+                <mat-error> Campo Obligatorio </mat-error>
+            </mat-form-field>                   
+            <ngx-material-timepicker #picker>Hora</ngx-material-timepicker><br>
+            <button mat-raised-button  (click)="NextStep('step4')"   
+                #next3_button        
+                *ngIf="isNewConfig"                 
+                color = "accent" type="button"
+                [disabled]="!this.rest1FormGroup.valid || 
+                            !this.rest2FormGroup.valid ||
+                            isDataLoading('config_loading')"                  
+                matStepperNext>
+                Guardar Configuracion
+            </button>
+            <button mat-raised-button  (click)="NextStep('step5')"   
+                #next4_button             
+                [ngStyle]="{'margin-left.px': 20}"            
+                color = "primary" type="button"
+                [disabled]="!this.rest1FormGroup.valid || 
+                            !this.rest2FormGroup.valid ||
+                            isDataLoading('config_loading')"                            
+                matStepperNext>
+                Iniciar Operacion
+            </button>
+        </form>
+    </mat-step>
+</mat-vertical-stepper>

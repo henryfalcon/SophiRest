@@ -1,0 +1,93 @@
+<form [formGroup]="platilloForm" class="normal-form" #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
+    <app-spinner *ngIf="isDataLoading('add_loading')"></app-spinner>
+    <mat-grid-list cols="2" rowHeight="380px">
+        <mat-grid-tile>
+            <div class="controles-container">
+                <input type="hidden" formControlName="$key">
+                <mat-form-field>
+                    <input formControlName="desc_corta" matInput placeholder="Desc. Corta*">
+                    <mat-error>Campo requerido</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <input formControlName="desc_larga" matInput placeholder="Desc. Larga*">
+                    <mat-error>Campo requerido</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <input formControlName="acompanamiento" matInput placeholder="Acompañamiento">
+                </mat-form-field>                
+                <mat-form-field>
+                    <input formControlName="guarnicion" matInput placeholder="Guarnicion">
+                </mat-form-field>
+                <mat-form-field>                    
+                    <textarea matInput placeholder="Ingredientes" 
+                        formControlName="ingredientes">
+                    </textarea>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select #matSelectTAlim placeholder="Tiempo Alimento">
+                        <mat-option value="" disabled>Tiempo alimento</mat-option>
+                        <mat-option *ngFor="let tiempo of tiempo_alimento" [value]="tiempo">
+                            {{tiempo.viewValue}}
+                        </mat-option>                                       
+                    </mat-select>
+                </mat-form-field>                
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="controles-container">
+                <mat-form-field>
+                    <mat-select #matSelectCateg placeholder="Categoria">              
+                      <mat-option value="" disabled>Choose</mat-option>
+                      <mat-option *ngFor="let cat of categories"
+                        [value]="cat">
+                        {{cat.categoria}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput 
+                        number-input-directive                            
+                        placeholder="Costo" 
+                        formControlName="costo"
+                        type="number"/>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput 
+                        number-input-directive
+                        placeholder="Precio*" 
+                        formControlName="precio"
+                        type="number"/>                                    
+                        <mat-error *ngIf="precio.hasError('required')">
+                            Campo requerido
+                        </mat-error>                            
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select #matSelect placeholder="Status*">
+                        <mat-option value="" disabled>Choose</mat-option>
+                        <mat-option *ngFor="let stats of status"
+                            [value]="stats">
+                            {{stats.viewValue}}
+                        </mat-option>
+                    </mat-select>        
+                </mat-form-field>                
+                <mat-form-field>
+                    <input matInput type = "time" placeholder="Tiempo preparacion" formControlName="tiempo_prep">
+                </mat-form-field>                                
+                <div class="space-buttons">
+                    <button mat-icon-button color="primary" type="submit"
+                        [disabled]= "isDataLoading('add-loading')">
+                        Guardar <mat-icon>save</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" (click)="CleanForm()"
+                        type = "button"
+                        [disabled]= "isDataLoading('add-loading')">
+                        Limpiar <mat-icon>cleaning_services</mat-icon>
+                    </button>
+                    <button mat-icon-button color="accent" mat-dialog-close>
+                        Salir <mat-icon>exit_to_app</mat-icon>
+                    </button>                   
+                </div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+</form>

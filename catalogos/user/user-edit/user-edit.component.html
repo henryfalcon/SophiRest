@@ -1,0 +1,40 @@
+<form [formGroup]="editUserForm" class="normal-form" #formDirective="ngForm" (ngSubmit)="confirm_Edit_Dialog()">
+    <app-spinner *ngIf = "isDataLoading('edit-loading')"></app-spinner>
+    <mat-grid-list cols="1" rowHeight="300px" [ngStyle]="{'margin-top.px': 10}">
+        <mat-grid-tile>
+            <div class="controles-container">
+                <h3 [ngStyle]="{'color': 'blue' }">
+                    Asignar al Usuario un Empleado</h3>
+                <mat-divider></mat-divider>
+                <h3>Usuario: {{user.email}} </h3>
+                <h3>Nombre: {{user.displayName}} </h3>
+                <mat-divider></mat-divider>
+                <mat-form-field [ngStyle]="{'margin-top.px': 10}">
+                    <mat-select #matSelectUser placeholder="Selecciona un empleado">
+                        <mat-option value="" disabled>Selecciona</mat-option>                            
+                        <mat-option *ngFor="let emp of emps"
+                            [value]="emp"> {{emp.fullname}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select #matSelectRol placeholder="Selecciona el Rol de Usuario">
+                        <mat-option value="" disabled>Selecciona</mat-option>
+                        <mat-option *ngFor="let rol of userRoles"
+                            [value]="rol">{{rol.role}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="space-buttons">                     
+                    <button mat-icon-button color="primary" type="submit"
+                        [disabled]="!valid_user_select || isDataLoading('edit_loading')">
+                        Guardar <mat-icon>save</mat-icon>
+                    </button>                                                                                
+                    <button mat-icon-button color="accent" mat-dialog-close>                     
+                        Salir <mat-icon>exit_to_app</mat-icon>
+                    </button>                          
+                </div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>    
+</form>

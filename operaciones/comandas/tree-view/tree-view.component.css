@@ -1,0 +1,8 @@
+ngx-treeview {
+    height: 100%;
+    width: 100%;
+}
+
+:host ::ng-deep ngx-treeview-item .form-check-input {
+    display: none;
+}

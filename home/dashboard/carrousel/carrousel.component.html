@@ -1,0 +1,9 @@
+<owl-carousel-o [options]="customOptions" style="position: relative">
+  <ng-container *ngFor="let slide of dynamicSlides">
+    <ng-template carouselSlide [id]="slide.id">
+      <img [src]="slide.src" [title]="slide.title" class="img-fluid" 
+        style="display:block; height:250px !important; margin:0px auto 30px;
+        border-radius: 10px; border-style: solid; border-color: white;" >
+    </ng-template>
+  </ng-container>
+</owl-carousel-o> 

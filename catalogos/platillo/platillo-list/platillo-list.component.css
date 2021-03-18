@@ -1,0 +1,17 @@
+mat-row[hidden] {
+    display: none !important;
+}
+
+.container-btn-new {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin: 1rem -0.6rem;
+}
+
+.container-btn-new button {
+  width: 25%;
+  color: whitesmoke;
+  background: #451e89;
+  cursor: pointer;
+}

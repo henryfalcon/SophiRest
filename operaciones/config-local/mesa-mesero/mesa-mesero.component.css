@@ -1,0 +1,6 @@
+.space-buttons{
+    display: flex; 
+    justify-content: space-around;
+    align-items: center; 
+    margin-left: 10px;
+}

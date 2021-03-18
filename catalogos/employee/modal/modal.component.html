@@ -1,0 +1,14 @@
+<h2>{{data.message}}</h2>
+<mat-dialog-content class="dialog-content">
+    <span [ngSwitch]="data.toForm">
+        <div *ngSwitchCase="'new_Employee'">
+            <app-employee-add></app-employee-add>
+        </div>
+        <div *ngSwitchCase="'edit_Employee'">
+            <app-employee-edit [emp] = "data.content"></app-employee-edit>
+        </div>
+        <div *ngSwitchDefault>
+            <!-- nothing -->
+        </div>
+    </span>
+</mat-dialog-content>
