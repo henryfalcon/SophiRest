@@ -1,0 +1,107 @@
+<form [formGroup]="editEmpForm" class="normal-form" (ngSubmit)="confirm_Edit_Dialog()">
+    <app-spinner *ngIf="isDataLoading('edit_loading')"></app-spinner>
+    <mat-tab-group animationDuration="500ms">        
+        <mat-divider></mat-divider>
+        <mat-tab label="Datos">
+            <mat-grid-list cols="3" rowHeight="300px" [ngStyle]="{'margin-top.px': 10}">
+                <mat-grid-tile>
+                    <div class="controles-container">
+                        <mat-card [ngStyle]="{'max-width.px': 200 }">
+                            <img mat-card-image src="{{emp.fotografia || 'assets/photo-to-load.svg'}}" async>
+                        </mat-card>
+                        <mat-card-actions align="end">
+                            <button mat-raised-button color="primary"
+                                type="button"
+                                [disabled]="editEmpForm.invalid || subIsUploadingPhoto"
+                                (click)="fileInput.click()">
+                                <mat-icon>camera_enhance</mat-icon>
+                            </button>
+                            <input type="file" #fileInput accept='image/*' (change)="selectFile($event)" multiple style="display:none;" />
+                        </mat-card-actions>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="controles-container">
+                        <mat-form-field>
+                            <input formControlName="fullname" matInput placeholder="Nombre*">
+                            <mat-error>Campo obligatorio.</mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input formControlName="email" matInput placeholder="Correo">
+                            <mat-error>Email no válido.</mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input formControlName="mobile" matInput placeholder="Mobile*">
+                            <mat-error *ngIf="editEmpForm.controls['mobile'].errors?.required">Campo obligatorio.
+                            </mat-error>
+                            <mat-error *ngIf="editEmpForm.controls['mobile'].errors?.minlength">Caracteres requeridos
+                                minimo: 8.</mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input formControlName="city" matInput placeholder="Ciudad">
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="controles-container">
+                        <div [ngStyle]="{'padding-bottom.px': 5}">
+                            <mat-radio-group formControlName="gender">
+                                <mat-radio-button value="Femenino">Femenino</mat-radio-button>
+                                <mat-radio-button value="Maculino">Masculino</mat-radio-button>
+                                <mat-radio-button value="Otro">Otro</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <mat-form-field>
+                            <mat-select #matSelectPuesto placeholder="Puesto"
+                                [compareWith]="compareFuncPuesto" [value]="emp.id_puesto">
+                                <mat-option *ngFor="let puesto of puestos" [value]="puesto">
+                                    {{puesto.puesto}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>                        
+                        <mat-form-field>
+                            <mat-select #matSelectDepto placeholder="Departamento"
+                                [compareWith]="compareFuncDepartamentoEmpleado" 
+                                [value]="emp.id_depto">
+                                <mat-option *ngFor="let dep of deptos" 
+                                    [value]="dep">
+                                    {{dep.departamento}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="standard">
+                            <mat-label>Fecha de Contrato</mat-label>
+                            <input matInput formControlName="hiredate" [matDatepicker]="picker1"
+                                placeholder="Fecha Contrato">
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                        </mat-form-field>
+                        <div [ngStyle]="{'padding-bottom.px': 10}">
+                            <mat-checkbox formControlName="ispermanent">
+                                Permanente
+                            </mat-checkbox>
+                        </div>
+                        <div class="space-buttons">                     
+                            <button mat-icon-button color="primary" type="submit"
+                                [disabled]="editEmpForm.invalid || isDataLoading('edit_loading')">
+                                Guardar <mat-icon>save</mat-icon>
+                            </button>                                                                                
+                            <button mat-icon-button color="accent" mat-dialog-close 
+                                [disabled]="isDataLoading('edit_loading')">
+                                Salir <mat-icon>exit_to_app</mat-icon>
+                            </button>                          
+                        </div>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </mat-tab> 
+        <mat-tab label="Usuario" *ngIf="emphasUser">
+            <div [ngStyle]="{'Height.px': 300}">
+                <app-employee-user 
+                    [employee] = "emp"
+                    [user] = "user">  
+                </app-employee-user>
+            </div>            
+        </mat-tab>
+    </mat-tab-group>
+</form>

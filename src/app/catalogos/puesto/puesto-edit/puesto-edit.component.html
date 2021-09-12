@@ -1,0 +1,80 @@
+<form [formGroup]="puestoForm" class="normal-form" #formDirective="ngForm" (ngSubmit)="confirm_Edit_Dialog()">
+    <app-spinner *ngIf="isDataLoading('edit_loading')"></app-spinner>
+    <mat-grid-list cols="2" rowHeight="380px">
+        <mat-grid-tile>
+            <div class="controles-container">            
+                <mat-form-field>
+                    <input formControlName="puesto" matInput placeholder="Puesto*">
+                    <mat-error>Campo requerido</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select #matSelectDeptos placeholder="Departamento"
+                        [compareWith] = "compareFuncDepartamentoEmpleado"
+                        [value] = "puesto.id_departamento">                    
+                        <mat-option *ngFor="let depto of deptos"
+                            [value]="depto">
+                            {{depto.departamento}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <input formControlName="formacion" matInput placeholder="Formacion*">
+                    <mat-error>Campo requerido</mat-error>
+                </mat-form-field>
+                <div [ngStyle]="{'padding-bottom.px': 10}">
+                    <mat-checkbox formControlName="disp_viajar">
+                        Disp. viajar
+                    </mat-checkbox>                                         
+                </div>                 
+                <div [ngStyle]="{'padding-bottom.px': 10}">
+                    <mat-checkbox formControlName="disp_cambio">
+                        Disp. cambio res.
+                    </mat-checkbox>                                         
+                </div>
+                <mat-form-field>
+                    <input matInput 
+                        number-input-directive                            
+                        placeholder="Ingreso desde" 
+                        formControlName="remuneracion_de"
+                        type="text">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput 
+                        number-input-directive
+                        placeholder="Ingreso hasta" 
+                        formControlName="remuneracion_hasta"
+                        type="text">
+                </mat-form-field>          
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="controles-container">
+                <mat-form-field>                    
+                    <textarea matInput placeholder="Habilidades" 
+                        formControlName="habilidades">
+                    </textarea>
+                </mat-form-field>                                              
+                <mat-form-field>                    
+                    <textarea matInput placeholder="Requisitos" 
+                        formControlName="requisitos">
+                    </textarea>
+                </mat-form-field>                    
+                <mat-form-field>                    
+                    <textarea matInput placeholder="Responsabilidad" 
+                        formControlName="responsabilidad">
+                    </textarea>
+                </mat-form-field>                                                  
+                <div class="space-buttons">
+                    <button mat-icon-button color="primary" type="submit"
+                        [disabled]= "puestoForm.invalid || isDataLoading('edit_loading')">
+                        Guardar <mat-icon>save</mat-icon>
+                    </button>
+                    <button mat-icon-button color="accent" mat-dialog-close
+                        [disabled]="isDataLoading('edit_loading')">
+                        Salir <mat-icon>exit_to_app</mat-icon>
+                    </button>                   
+                </div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+</form>

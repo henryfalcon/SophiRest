@@ -1,0 +1,15 @@
+<app-toolbar-menu></app-toolbar-menu>
+<div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="20px">
+    <div fxFlex="30%">
+        <app-tree-view></app-tree-view>
+    </div>
+    <div fxFlex="70%">
+        <mat-grid-list cols="1" rowHeigth="300">
+            <mat-grid-tile>                
+                <div class="fitall">
+                    <router-outlet></router-outlet>                
+                </div>                
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+</div>                                

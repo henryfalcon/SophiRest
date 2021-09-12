@@ -1,0 +1,45 @@
+<form [formGroup]="comandaForm" class="normal-form" #formDirective="ngForm">
+<app-spinner *ngIf="isDataLoading('comanda_loading')"></app-spinner>
+<mat-grid-list cols="2" rowHeight="350" [ngStyle]="{'margin-top.px': 10}">
+    <mat-grid-tile>
+        <div class="controles-container">
+            <mat-card>
+                <mat-form-field appearance="fill">
+                    <mat-label>Mesa</mat-label>
+                    <input formControlName="mesa_name" matInput readonly>
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                  </mat-form-field>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Mesero</mat-label>
+                    <input formControlName="mesero" matInput readonly>
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                  </mat-form-field>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Cliente</mat-label>
+                    <input formControlName="cliente_name" matInput readonly>
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                  </mat-form-field>                  
+            </mat-card>          
+        </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <div class="controles-container">
+            <mat-card>
+                <mat-selection-list #list_detalle>
+                    <mat-list-option *ngFor="let detalle of comanda_detalle" (click)="listDetalleSelected(detalle)">
+                      {{detalle.platillo + ' ' + detalle.acompanamiento}} 
+                      <mat-divider></mat-divider>
+                    </mat-list-option>
+                  </mat-selection-list> 
+            </mat-card>
+            <mat-card-actions align="end">
+                <button mat-raised-button color="primary" (click)="despachar_Comanda_Dialog()">
+                    <mat-icon><span class="material-icons-outlined">
+                        assignment_turned_in
+                    </span></mat-icon>
+                </button>
+            </mat-card-actions>  
+        </div>
+    </mat-grid-tile>
+</mat-grid-list>
+</form>

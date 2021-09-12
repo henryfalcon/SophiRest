@@ -1,0 +1,84 @@
+<form [formGroup]="puestoForm" class="normal-form" #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
+    <app-spinner *ngIf="isDataLoading('add_loading')"></app-spinner>
+    <mat-grid-list cols="2" rowHeight="380px">
+        <mat-grid-tile>
+            <div class="controles-container">
+                <input type="hidden" formControlName="$key">
+                <mat-form-field>
+                    <input formControlName="puesto" matInput placeholder="Puesto*">
+                    <mat-error>Campo requerido</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select #matSelectDeptos placeholder="Departamento">              
+                      <mat-option value="" disabled>Choose</mat-option>
+                      <mat-option *ngFor="let depto of deptos"
+                        [value]="depto">
+                        {{depto.departamento}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <input formControlName="formacion" matInput placeholder="Formacion*">
+                    <mat-error>Campo requerido</mat-error>
+                </mat-form-field>
+                <div [ngStyle]="{'padding-bottom.px': 10}">
+                    <mat-checkbox formControlName="disp_viajar">
+                        Disp. viajar
+                    </mat-checkbox>                                         
+                </div>                 
+                <div [ngStyle]="{'padding-bottom.px': 10}">
+                    <mat-checkbox formControlName="disp_cambio">
+                        Disp. cambio res.
+                    </mat-checkbox>                                         
+                </div>
+                <mat-form-field>
+                    <input matInput 
+                        number-input-directive                            
+                        placeholder="Ingreso desde" 
+                        formControlName="remuneracion_de"
+                        type="number"/>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput 
+                        number-input-directive
+                        placeholder="Ingreso hasta" 
+                        formControlName="remuneracion_hasta"
+                        type="number"/>
+                </mat-form-field>          
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="controles-container">
+                <mat-form-field>                    
+                    <textarea matInput placeholder="Conocimientos / Habilidades" 
+                        formControlName="habilidades">
+                    </textarea>
+                </mat-form-field>                                              
+                <mat-form-field>                    
+                    <textarea matInput placeholder="Requisitos" 
+                        formControlName="requisitos">
+                    </textarea>
+                </mat-form-field>                    
+                <mat-form-field>                    
+                    <textarea matInput placeholder="responsabilidad" 
+                        formControlName="responsabilidad">
+                    </textarea>
+                </mat-form-field>                                                  
+                <div class="space-buttons">
+                    <button mat-icon-button color="primary" type="submit"
+                        [disabled]= "isDataLoading('add_loading')">
+                        Guardar <mat-icon>save</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" (click)="CleanForm()"
+                        [disabled]= "isDataLoading('add_loading')"
+                        (click)="CleanForm()">
+                        Limpiar <mat-icon>cleaning_services</mat-icon>
+                    </button>
+                    <button mat-icon-button color="accent" mat-dialog-close>
+                        Salir <mat-icon>exit_to_app</mat-icon>
+                    </button>                   
+                </div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+</form>

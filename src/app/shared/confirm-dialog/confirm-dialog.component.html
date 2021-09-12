@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>
+    {{data.title}}
+</h1>
+<div mat-dialog-content>
+    <p>{{data.message}}</p>
+</div>
+<div mat-dialog-actions fxLayoutAlign= "flex-end">
+    <button mat-raised-button color="accent"  *ngIf="!(data.isErrorMsg)"
+        [mat-dialog-close]="false">
+        {{data.cancelText}}
+    </button>
+    <button mat-raised-button color="primary"  [mat-dialog-close]="true">
+        {{data.confirmText}}
+    </button>
+</div>

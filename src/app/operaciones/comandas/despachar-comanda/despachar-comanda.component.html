@@ -1,0 +1,82 @@
+<Form [formGroup]="formComanda1" class="normal-form" #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)"> 
+    <mat-toolbar color='gray'>Despachar Comanda</mat-toolbar>
+    <app-spinner *ngIf="isDataLoading('loading')"></app-spinner>
+    <mat-grid-list cols="1" rowHeight="400px" [ngStyle]="{'margin.top.px': 10}">
+        <mat-grid-tile>
+            <div class="controles-container">
+                <mat-card>
+                    <input type="hidden" formControlName="$key">
+                    <mat-form-field [ngStyle]="{'margin-right.px': 30}">
+                        <mat-select #matSelectMesa placeholder="Mesa">
+                            <mat-option value="" disabled>Escoge una Mesa</mat-option>
+                            <mat-option *ngFor="let mesa of mesas"
+                                [value]="mesa">
+                                {{mesa.mesa_name}}
+                            </mat-option>
+                        </mat-select> 
+                    </mat-form-field>   
+                    <mat-form-field>    
+                        <input formControlName="cliente_name" matInput placeholder="Nombre de Cliente">
+                    </mat-form-field>    
+                </mat-card>                         
+                <div class="mat-elevation-z8">                
+                    <mat-table  [dataSource]="platillos_dataSource" matSort>
+                            <ng-container matColumnDef="platillo">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                  Platillo
+                                  <mat-cell *matCellDef="let element">
+                                      {{element.platillo}}
+                                  </mat-cell>                
+                              </mat-header-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="acompanamiento">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                  Acompañamiento
+                                  <mat-cell *matCellDef="let element">
+                                      {{element.acompanamiento}}
+                                  </mat-cell>
+                              </mat-header-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="observacion">
+                             <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                 Observacion
+                                 <mat-cell *matCellDef="let element">
+                                     {{element.observacion}}
+                                 </mat-cell>
+                             </mat-header-cell>
+                           </ng-container>                                  
+                            <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button mat-icon-button
+                                    color="primary"
+                                    (click)="despachar_plato(element)"
+                                    [disabled]="isDataLoading('loading_comanda')">
+                                    <mat-icon>table_restaurant</mat-icon>                                                                                
+                                </button>
+                            </td>
+                            </ng-container>
+                            <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                No data
+                            </mat-footer-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="loading">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                Loading data...    
+                            </mat-footer-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                               [ngClass]="{'hide':!(platillos_dataSource!=null && platillos_dataSource.data.length==0)}">
+                            </mat-footer-row>  
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                               [ngClass]="{'hide':!(isDataLoading('loading'))}">
+                            </mat-footer-row>
+                    </mat-table>
+                </div>                 
+            </div> 
+        </mat-grid-tile>
+    </mat-grid-list>
+</Form>    

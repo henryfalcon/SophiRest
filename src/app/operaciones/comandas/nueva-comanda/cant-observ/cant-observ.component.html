@@ -1,0 +1,24 @@
+<form class="normal-form">
+    <h1 mat-dialog-title>
+        {{data.title}}
+    </h1>
+    <div mat-dialog-content>
+        <div class= "controles-container">
+        <mat-form-field>
+            <input matInput #cant
+                number-input-directive                            
+                placeholder="Cantidad" 
+                type="number">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Observacion" #observacion>
+        </mat-form-field>
+    </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign= "flex-end">
+        <button mat-raised-button color="primary" type="button"
+            (click) = "ReportCantObserv(cant.value, observacion.value)">
+                 Aceptar    
+        </button>
+    </div>
+</form>

@@ -1,0 +1,38 @@
+<form [formGroup]="mesasForm" class="normal-form" #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
+    <app-spinner *ngIf = "isDataLoading('loading-meseros')"></app-spinner>
+    <mat-card>
+        <mat-card-content>
+            <mat-form-field>
+                <input formControlName="id_mesa" matInput placeholder="ID Mesa" [disabled]='true'>
+            </mat-form-field><br>
+            <mat-form-field>
+                <input matInput placeholder="Alias Mesa" formControlName="mesa_name">
+                <mat-error>Campo Requerido</mat-error>
+            </mat-form-field><br>
+            <mat-form-field>
+                <mat-select #matSelectMeseros placeholder="Mesero">
+                    <mat-option *ngFor="let mesero of meseros" [value]="mesero">                
+                        {{mesero.fullname}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>Especifique el Mesero</mat-error>
+            </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+            <div class="space-buttons">
+                <button mat-icon-button color="primary" type="submit" 
+                    [mat-dialog-close]="mesa_mesero"
+                    [disabled]="!mesasForm.valid || isDataLoading('loading-meseros')">
+                    Guardar 
+                    <mat-icon>save</mat-icon>                
+                </button>
+                <button mat-icon-button color="accent" 
+                    [mat-dialog-close]="false"
+                    [disabled]="isDataLoading('loadin-meseros')">
+                    Cancelar
+                    <mat-icon>exit_to_app</mat-icon>                
+                </button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</form>

@@ -1,0 +1,11 @@
+<h2>{{data.message}}</h2>
+<mat-dialog-content class="dialog-content">
+    <span [ngSwitch]="data.toForm">
+        <div *ngSwitchCase="'comanda_detalle'">
+            <app-cocina-comanda [comanda] = "data.content"></app-cocina-comanda>
+        </div>
+        <div *ngSwitchDefault>
+            <!-- nothing -->
+        </div>
+    </span>
+</mat-dialog-content>

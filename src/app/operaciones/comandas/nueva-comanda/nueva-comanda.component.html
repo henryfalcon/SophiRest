@@ -1,0 +1,237 @@
+<Form [formGroup]="formComanda1" class="normal-form" #formDirective="ngForm" (ngSubmit) = "onSubmit(formDirective)">
+  <app-spinner *ngIf="isDataLoading('loading_comanda')"></app-spinner>
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title [ngStyle]="{'color': 'violet'}">
+          Crear Comanda
+        </mat-panel-title>
+        <mat-panel-description>
+          Seleccionar Mesa / Mesero
+          <mat-icon>approval</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="controls_panel1"> 
+        <input type="hidden" formControlName="$key">
+        <mat-form-field>
+          <mat-select #matSelectMesa placeholder="Mesa">
+            <mat-option value="" disabled>Escoge una Mesa</mat-option>
+            <mat-option *ngFor="let mesa of mesas"
+                  [value]="mesa">
+                {{mesa.mesa_name}}
+            </mat-option>
+          </mat-select>          
+        </mat-form-field>    
+        <mat-form-field [ngStyle]="{'margin-left.px': 10}">
+          <mat-select #matSelectMesero placeholder="Mesero"
+            formControlName="id_mesero"
+            [compareWith]="compareFuncMesero">
+            <mat-option value="" disabled>Selecciona el Mesero</mat-option>
+            <mat-option *ngFor="let mesero of meseros"
+                [value]="mesero">
+                {{mesero.fullname}}
+            </mat-option>
+          </mat-select>          
+        </mat-form-field>                    
+        <mat-form-field>
+          <input formControlName="cliente_name" matInput placeholder="Nombre de Cliente">
+        </mat-form-field>   
+      </div>
+      <mat-action-row>
+        <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title [ngStyle]="{'color': 'green'}">
+          Alimentos
+        </mat-panel-title>
+        <mat-panel-description>
+          Añade Alimentos solicitados
+          <mat-icon>fastfood</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="controls_panel2">
+        <div class="search-div">
+          <mat-form-field class="search-form-field" floatLabel="never">
+            <input matInput placeholder="Buscar Platillo"
+            [(ngModel)]="searchKey"  
+            [ngModelOptions]="{standalone: true}"
+            (keyup)="applyFilter()"
+            autocomplete="off">
+            <button mat-button matSuffix mat-icon-button
+                aria-label="Clear" *ngIf="searchKey"
+                (click)="onSearchClear()">
+                <mat-icon>close</mat-icon>
+              </button>         
+          </mat-form-field>
+        </div>
+        <div class="mat-elevation-z8">
+          <mat-table [dataSource]="platillos_dataSource" matSort>
+             <ng-container matColumnDef="desc_corta">
+               <mat-header-cell *matHeaderCellDef mat-sort-header>
+                   Platillo
+                   <mat-cell *matCellDef="let element">
+                       {{element.desc_corta}}
+                   </mat-cell>                
+               </mat-header-cell>
+             </ng-container>
+             <ng-container matColumnDef="desc_larga">
+               <mat-header-cell *matHeaderCellDef mat-sort-header>
+                   Descripcion
+                   <mat-cell *matCellDef="let element">
+                       {{element.desc_larga}}
+                   </mat-cell>
+               </mat-header-cell>
+             </ng-container>
+             <ng-container matColumnDef="acompanamiento">
+               <mat-header-cell *matHeaderCellDef mat-sort-header>
+                   Acompañamiento
+                   <mat-cell *matCellDef="let element">
+                       {{element.acompanamiento}}
+                   </mat-cell>
+               </mat-header-cell>
+             </ng-container>                                  
+             <ng-container matColumnDef="precio">
+               <mat-header-cell *matHeaderCellDef mat-sort-header>
+                   Precio
+                   <mat-cell *matCellDef="let element">
+                       {{element.precio}}
+                   </mat-cell>
+               </mat-header-cell>
+             </ng-container>
+             <ng-container matColumnDef="actions">
+             <th mat-header-cell *matHeaderCellDef>Acciones</th>
+             <td mat-cell *matCellDef="let element">
+                 <button mat-icon-button
+                     color="primary"
+                     (click)="onAddPlatillo(element)"
+                     [disabled]="isDataLoading('loading_comanda')">
+                     <mat-icon>add</mat-icon>
+                 </button>
+             </td>
+             </ng-container>
+             <ng-container matColumnDef="noData">
+             <mat-footer-cell *matFooterCellDef colspan="6">
+                 No data
+             </mat-footer-cell>
+             </ng-container>
+             <ng-container matColumnDef="loading">
+             <mat-footer-cell *matFooterCellDef colspan="6">
+                 Loading data...    
+             </mat-footer-cell>
+             </ng-container>
+             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+             <mat-footer-row *matFooterRowDef="['noData']"
+                [ngClass]="{'hide':!(platillos_dataSource!=null && platillos_dataSource.data.length==0)}">
+             </mat-footer-row>  
+             <mat-footer-row *matFooterRowDef="['loading']"
+                [ngClass]="{'hide':!(isDataLoading('loading'))}">
+             </mat-footer-row>
+          </mat-table>
+        </div>        
+        <mat-paginator #paginator1 [pageSizeOptions]="[5,10,20]"
+            [pageSize]="5"
+            showFirstLastButtons>
+        </mat-paginator>                
+      </div>
+      <mat-action-row>
+        <mat-action-row>
+          <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+          <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+        </mat-action-row>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title [ngStyle]="{'color': 'blue'}">
+          Alimentos Seleccionados
+        </mat-panel-title>
+        <mat-panel-description>
+          Confirma o Elimina
+          <mat-icon>list alt</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="controls_panel3">
+        <div class="mat-elevation-z8">
+          <mat-table [dataSource]="platSelected_dataSource" matSort>
+            <ng-container matColumnDef="desc_larga">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Descripcion
+                  <mat-cell *matCellDef="let element">
+                      {{element.plat_desc_larga}}
+                  </mat-cell>
+              </mat-header-cell>
+            </ng-container>
+            <ng-container matColumnDef="acompanamiento">
+              <mat-header-cell *matHeaderCellDef>
+                  Acompañamiento
+                  <mat-cell *matCellDef="let element">
+                      {{element.acompanamiento}}
+                  </mat-cell>
+              </mat-header-cell>
+            </ng-container>            
+            <ng-container matColumnDef="cant">
+              <mat-header-cell *matHeaderCellDef>
+                  Cantidad
+                  <mat-cell *matCellDef="let element">
+                      {{element.cant}}
+                  </mat-cell>
+              </mat-header-cell>
+            </ng-container>            
+            <ng-container matColumnDef="precio">
+              <mat-header-cell *matHeaderCellDef>
+                  Precio
+                  <mat-cell *matCellDef="let element">
+                      {{element.precio}}
+                  </mat-cell>
+              </mat-header-cell>
+            </ng-container>
+            <ng-container matColumnDef="subtotal">
+              <mat-header-cell *matHeaderCellDef>
+                  Subtotal
+                  <mat-cell *matCellDef="let element">
+                      {{element.subtotal}}
+                  </mat-cell>
+              </mat-header-cell>
+            </ng-container>                                              
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Acciones</th>
+              <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button
+                      color="accent"
+                      (click)="onDeleteSelectedPlatillo(element)"
+                      [disabled]="isDataLoading('loading_comanda')">
+                      <mat-icon>delete</mat-icon>
+                  </button>
+              </td>
+            </ng-container>            
+            <mat-header-row *matHeaderRowDef="displayedColumns_platsSelected"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns_platsSelected;"></mat-row>
+          </mat-table>
+        </div>
+        <mat-paginator #paginator2 [pageSizeOptions]="[5,10,20]"
+          [pageSize]="5"
+          showFirstLastButtons>
+        </mat-paginator>                
+      </div>
+      <mat-action-row fxFlex>
+        <span fxFlex>
+          <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+          <button mat-button color="primary"[disabled]="!comanda_completed" (click)="confirmComanda()">Finalizar Comanda</button>
+        </span>
+        <div>
+          <mat-form-field appearance="fill"
+            [ngStyle]="{'font-size.px': 18}">
+            <mat-label>Total:</mat-label>
+            <input matInput placeholder="$0.00" 
+              formControlName="total" 
+              [readonly]="true"
+              [ngStyle]="{'text-align': 'right' }">
+          </mat-form-field>
+        </div>
+      </mat-action-row>      
+    </mat-expansion-panel>
+  </mat-accordion>
+</Form>

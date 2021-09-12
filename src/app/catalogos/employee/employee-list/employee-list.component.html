@@ -1,0 +1,84 @@
+<app-spinner *ngIf="isDataLoading('loading')"></app-spinner>
+<div class="search-div">
+    <mat-form-field class="search-form-field" floatLabel="never">
+        <input matInput placeholder="Filter"
+        [(ngModel)]="searchKey"
+        (keyup)="applyFilter()"
+        autocomplete="off">
+        <button mat-button matSuffix mat-icon-button
+            aria-label="Clear" *ngIf="searchKey"
+            (click)="onSearchClear()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-form-field>
+</div>
+<div class="mat-elevation-z8">
+    <!-- Table List-->
+    <mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="fullname">
+          <mat-header-cell *matHeaderCellDef  mat-sort-header>Nombre</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.fullname}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="gender">
+          <mat-header-cell *matHeaderCellDef  mat-sort-header>Genero</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.gender}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="department">
+          <mat-header-cell *matHeaderCellDef  mat-sort-header>Departamento</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.department}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="mobile">
+          <mat-header-cell *matHeaderCellDef  mat-sort-header>Celular</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.mobile}}</mat-cell>
+        </ng-container>  
+        <ng-container matColumnDef="ispermanent">
+          <mat-header-cell *matHeaderCellDef  mat-sort-header>Permanente</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.ispermanent | SiNo}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let element"> 
+            <button mat-icon-button color="primary" (click)="onEditEmployee(element)"
+                [disabled]="isDataLoading('loading')">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="confirm_Delete_Dialog(element)"
+                [disabled]="isDataLoading('loading') || user_role != 'ADMIN' ">
+                <mat-icon>delete_outline</mat-icon>
+            </button>        
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="noData">
+          <mat-footer-cell *matFooterCellDef colspan="6">
+              No data.
+          </mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="loading">
+          <mat-footer-cell *matFooterCellDef colspan="6">
+            Loading data...
+          </mat-footer-cell>
+        </ng-container>  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>  
+      <mat-footer-row *matFooterRowDef="['loading']" 
+        [ngClass]="{'hide':(!isDataLoading('loading'))}">
+      </mat-footer-row>
+      <mat-footer-row *matFooterRowDef="['noData']" 
+        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+      </mat-footer-row>
+    </mat-table>  
+</div>
+<!-- Paginator -->
+<mat-paginator [pageSizeOptions]="[5,10,20]"
+    [pageSize]="5"
+    showFirstLastButtons>
+</mat-paginator>
+<!-- Add Employee Button -->
+<div class="container-btn-new">
+    <button mat-stroked-button
+        (click)="onNewEmployee()"
+        [disabled]="isDataLoading('loading')">
+        <mat-icon>note_add</mat-icon>
+        &nbsp; Nuevo Empleado   
+    </button>
+</div>

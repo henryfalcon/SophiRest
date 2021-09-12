@@ -1,0 +1,80 @@
+<form [formGroup]="employeeForm" class="normal-form" #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
+    <app-spinner *ngIf = "isDataLoading('add-loading')"></app-spinner>
+    <mat-grid-list cols="2" rowHeight="300px">
+        <mat-grid-tile>
+            <div class="controles-container">
+                <input type="hidden" formControlName="$key">
+                <mat-form-field>
+                    <input formControlName="fullname" matInput placeholder="Full Name*">
+                    <mat-error>Campo requerido.</mat-error>
+                </mat-form-field>   
+                <mat-form-field>
+                    <input formControlName="email" matInput placeholder="Email">
+                    <mat-error>Correo inválido.</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <input formControlName="mobile" matInput placeholder="Mobile*">
+                    <mat-error *ngIf="employeeForm.controls['mobile'].errors?.required">This field is mandatory.</mat-error>
+                    <mat-error *ngIf="employeeForm.controls['mobile'].errors?.minlength">Minimum 8 charactors needed.</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <input formControlName="city" matInput placeholder="City">
+                </mat-form-field>                             
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="controles-container">
+                <div [ngStyle]="{'padding-bottom.px': 10}">
+                    <mat-radio-group formControlName="gender">
+                        <mat-radio-button value="Femenino">Femenino</mat-radio-button>
+                        <mat-radio-button value="Maculino">Masculino</mat-radio-button>
+                        <mat-radio-button value="Otro">Otro</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <mat-form-field>
+                    <mat-select #matSelectPuestos placeholder="Puesto">              
+                      <mat-option value="" disabled>Choose</mat-option>
+                        <mat-option *ngFor="let puesto of puestos"
+                        [value]="puesto">
+                        {{puesto.puesto}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>                 
+                <mat-form-field>
+                    <mat-select #matSelect placeholder="Department">              
+                      <mat-option value="" disabled>Choose</mat-option>
+                      <mat-option *ngFor="let dep of deptos"
+                        [value]="dep">
+                        {{dep.departamento}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field> 
+                <mat-form-field>
+                    <input formControlName="hiredate" matInput [matDatepicker]="picker" placeholder="Hire Date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>  
+                <div [ngStyle]="{'padding-bottom.px': 10}">
+                    <mat-checkbox formControlName="ispermanent">
+                        Permanent Employee
+                    </mat-checkbox>                                         
+                </div>  
+                <mat-divider></mat-divider>
+                <div class="space-buttons">
+                    <button mat-icon-button color="primary" type="submit"
+                        [disabled]= "isDataLoading('add-loading')">
+                        Guardar <mat-icon>save</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary"
+                        [disabled]= "isDataLoading('add-loading')"
+                        (click)="CleanForm()">
+                        Limpiar <mat-icon>cleaning_services</mat-icon>
+                    </button>
+                    <button mat-icon-button color="accent" mat-dialog-close>
+                        Salir <mat-icon>exit_to_app</mat-icon>
+                    </button>
+                </div>                                  
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+</form> 

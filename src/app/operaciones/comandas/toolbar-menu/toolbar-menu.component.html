@@ -1,0 +1,47 @@
+<mat-toolbar color="gray">
+    <mat-toolbar-row fxFlex>
+        <span fxFlex>Nueva Comanda</span>
+        <div> 
+            <button mat-icon-button [matMenuTriggerFor]="comandas" 
+                color="primary"
+                [ngStyle]="{'margin-right.px':180}">
+                <mat-icon>menu_book</mat-icon> Operaciones Comandas
+            </button>
+            <mat-menu #comandas="matMenu" xPosition="after">
+                <button mat-menu-item (click)="newComandaMenuItem()">
+                    <mat-icon>note_add</mat-icon> Nueva Comanda
+                </button>
+                <button mat-menu-item (click)="despacharComanda()">
+                    <mat-icon>add_task</mat-icon> Despachar
+                </button>
+                <button mat-menu-item (click)="cancelComandaMenuItem()">
+                    <mat-icon>cancel</mat-icon>  Cancelar Comanda
+                </button>
+                <button mat-menu-item (click)="closeComandaMenuItem()">
+                    <mat-icon>payment</mat-icon> Cerrar Cuenta
+                </button>
+            </mat-menu>
+        </div>
+        <div>        
+            <button mat-icon-button [matMenuTriggerFor]="mesas" 
+                color="accent"
+                [ngStyle]="{'margin-right.px':100}">
+                <mat-icon>pivot_table_chart</mat-icon> Operaciones Mesas
+            </button>
+            <mat-menu #mesas="matMenu" xPosition="before">
+                <button mat-menu-item>
+                    <mat-icon>add</mat-icon> Añadir Mesa
+                </button>
+                <button mat-menu-item>
+                    <mat-icon>close</mat-icon> Quitar Mesa
+                </button>
+                <button mat-menu-item>
+                    <mat-icon>assignment_ind</mat-icon> Reasignar Mesero
+                </button>
+                <button mat-menu-item>
+                    <mat-icon>assignment_return</mat-icon> Reasignar Mesa-Cliente
+                </button>
+            </mat-menu>        
+        </div>
+    </mat-toolbar-row>
+</mat-toolbar>

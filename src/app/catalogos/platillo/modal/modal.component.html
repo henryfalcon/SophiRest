@@ -1,0 +1,14 @@
+<h2>{{data.message}}</h2>
+<mat-dialog-content class="dialog-content">
+    <span [ngSwitch]="data.toForm">
+        <div *ngSwitchCase="'new_Platillo'">
+            <app-platillo-add></app-platillo-add>
+        </div>
+        <div *ngSwitchCase="'edit_Platillo'">
+            <app-platillo-edit [plat] = "data.content"></app-platillo-edit>
+        </div>
+        <div *ngSwitchDefault>
+            <!-- nothing -->
+        </div>
+    </span>
+</mat-dialog-content>

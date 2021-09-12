@@ -1,0 +1,12 @@
+img{
+    height: fit-content;
+}
+
+mat-card {
+    height: 140px;
+}
+
+mat-card-content {
+    height: 90%;
+}
+

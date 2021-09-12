@@ -1,0 +1,13 @@
+.owl-buttons, .owl-pagination {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;                                     
+}
+
+.owl-buttons {
+    top: 0 !important;
+}
+
+.owl-pagination {
+    bottom: 0 !important;
+}

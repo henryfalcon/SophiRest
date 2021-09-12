@@ -1,0 +1,33 @@
+.submenu.expanded {
+    transform: scaleY(1);
+  }
+  
+  .submenu {
+    overflow-y: hidden;
+    transition: transform 300ms ease;
+    transform: scaleY(0);
+    transform-origin: top;
+    padding-left: 30px;
+  }
+  
+  .profile-card {
+    text-align: center;
+    padding: 0 20px 20px 20px;
+  }
+  
+  .profile-card img {
+    margin-top: 20px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .menu-button {
+    transition: 300ms ease-in-out;
+    transform: rotate(0deg);
+  }
+  
+  .menu-button.rotated {
+    transform: rotate(180deg);
+  } 

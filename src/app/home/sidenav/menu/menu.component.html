@@ -1,0 +1,111 @@
+<mat-nav-list>
+
+    <!-- Profile -->
+    <mat-list-item (click)="setMenuHeight('profile')" class="parent">
+        <span [ngStyle]="{'width.%':100}" *ngIf="isExpanded || isShowing">
+            {{user_email}}
+        </span>
+        <mat-icon mat-list-icon>person</mat-icon>
+        <mat-icon class="menu-button" [ngClass]="{'rotated': showProfile}" *ngIf="isExpanded || isShowing">
+            expand_more
+        </mat-icon>
+    </mat-list-item>
+    <div class="submenu" [ngClass]="{'expanded':showProfile}" *ngIf="isShowing || isExpanded">
+        <mat-list-item [ngStyle]="{'height.px': profileMenuHeight}">
+            <div class="profile-card">
+                <div class="header">
+                    <img src="{{fotografia || 'assets/photo-to-load.svg'}}">
+                    <p>{{display_name}}</p>
+                    <p>{{user_role}}</p>
+                </div>
+            </div>
+        </mat-list-item>
+    </div>
+    <mat-divider>
+
+    <!-- Menu Principal -->    
+    </mat-divider>
+    <mat-list-item (click)="showSubmenu = !showSubmenu" class="parent">
+        <span [ngStyle]="{'width.%':100}" *ngIf="isExpanded || isShowing">
+            Menu Principal
+        </span>
+        <mat-icon mat-list-icon>home</mat-icon>
+        <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}" *ngIf="isExpanded || isShowing">
+            expand_more
+        </mat-icon>
+    </mat-list-item>
+    <mat-divider>
+
+    <!-- Sub Menú -->
+    </mat-divider>
+    <div class="submenu" [ngClass]="{'expanded':showSubmenu}" *ngIf="isShowing || isExpanded">
+
+        <!-- Dashboard -->
+        <a mat-list-item routerLink="dashboard">
+            <mat-icon class="icono">dashboard</mat-icon>Dashboard
+        </a>
+
+        <div><!-- Catalogos -->
+            <mat-list-item (click)="setMenuHeight('catalogo')" class="parent">
+                <span [ngStyle]="{'width.%': 100}" *ngIf="isExpanded || isShowing">
+                    Catalogos
+                </span>
+                <mat-icon class="menu-button" [ngClass]="{'rotated':showMenuCatalogos}" *ngIf="isExpanded || isShowing">
+                    expand_more
+                </mat-icon>
+            </mat-list-item>
+            <mat-divider [ngStyle]="{'width.%': 100}"></mat-divider>
+            <!-- Sub Menú -->
+            <div class="submenu" [ngClass]="{'expanded':showMenuCatalogos}" *ngIf="isShowing || isExpanded">
+                <a mat-list-item [routerLink]="menu_cat.ruta" *ngFor="let menu_cat of catalogoItems" [ngStyle]="{'height.px': catalogoMenuHeight}">
+                    <mat-icon [ngStyle]="{'margin-right.px':10}">
+                        {{menu_cat.icono}}
+                    </mat-icon>
+                    {{menu_cat.nombre}}
+                </a>
+            </div>
+        </div>
+
+        <div><!-- Operaciones -->
+            <mat-list-item (click)="setMenuHeight('operacion')" class="parent">
+                <span [ngStyle]="{'width.%': 100}" *ngIf="isExpanded || isShowing">
+                    Operaciones
+                </span>
+                <mat-icon class="menu-button" [ngClass]="{'rotated':showMenuOperaciones}" *ngIf="isExpanded || isShowing">
+                    expand_more
+                </mat-icon>
+                <mat-divider [ngStyle]="{'width.%': 100}"></mat-divider>
+                <!-- Sub Menú -->
+            </mat-list-item>
+            <div class="submenu" [ngClass]="{'expanded':showMenuOperaciones}" *ngIf="isShowing || isExpanded">                
+                <a mat-list-item [routerLink]="menu_oper.ruta" *ngFor="let menu_oper of operacionesItems" [ngStyle]="{'height.px': operacionMenuHeight}">
+                    <mat-icon [ngStyle]="{'margin-right.px':10}">
+                        {{menu_oper.icono}}
+                    </mat-icon>
+                    {{menu_oper.nombre}}
+                </a>
+            </div>
+        </div>
+
+        <div><!-- Reportes -->
+            <mat-list-item (click)="setMenuHeight('reporte')" class="parent">
+                <span [ngStyle]="{'width.%': 100}" *ngIf="isExpanded || isShowing">
+                    Reportes
+                </span>
+                <mat-icon class="menu-button" [ngClass]="{'rotated':showMenuReportes}" *ngIf="isExpanded || isShowing">
+                    expand_more
+                </mat-icon>
+                <mat-divider [ngStyle]="{'width.%': 100}"></mat-divider>
+                <!-- Sub Menú -->
+            </mat-list-item>
+            <div class="submenu" [ngClass]="{'expanded':showMenuReportes}" *ngIf="isShowing || isExpanded">                
+                <a mat-list-item *ngFor="let menu_rep of reportesItems" [ngStyle]="{'height.px': reporteMenuHeight}">
+                    <mat-icon [ngStyle]="{'margin-right.px':10}">
+                        {{menu_rep.icono}}
+                    </mat-icon>
+                    {{menu_rep.nombre}}
+                </a>
+            </div>
+        </div>
+    </div>
+</mat-nav-list>
